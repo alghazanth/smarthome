@@ -1,28 +1,28 @@
 #[allow(unused)]
-struct Socket<'a> {
-    name: &'a str,
-    description: &'a str,
-    status: &'a str,
-    power_consumption: i32,
+pub struct Socket<'a> {
+    pub name: &'a str,
+    pub description: &'a str,
+    pub status: &'a str,
+    pub consumption: i32,
 }
 
 #[allow(unused)]
-struct Thermometer<'a> {
-    name: &'a str,
-    description: &'a str,
-    temperature: i32,
+pub struct Thermometer<'a> {
+    pub name: &'a str,
+    pub description: &'a str,
+    pub temperature: i32,
 }
 
 #[allow(unused)]
-enum SmartDevice<'a> {
+pub enum SmartDevice<'a> {
     Socket(Socket<'a>),
     Thermometer(Thermometer<'a>),
 }
 
 impl PartialEq for SmartDevice<'_> {
     fn eq(&self, other: &Self) -> bool {
-        use crate::SmartDevice::Socket;
-        use crate::SmartDevice::Thermometer;
+        use crate::devices::SmartDevice::Socket;
+        use crate::devices::SmartDevice::Thermometer;
         match (self, other) {
             (Socket(a), Socket(b)) => a.name == b.name,
             (Thermometer(a), Thermometer(b)) => a.name == b.name,
@@ -31,16 +31,16 @@ impl PartialEq for SmartDevice<'_> {
     }
 }
 
-trait SmartDeviceTrait {
+pub trait SmartDeviceTrait {
     fn get_name(&self) -> &str;
 
     fn get_status(&self) -> String;
 }
 
-impl SmartDeviceTrait for crate::SmartDevice<'_> {
+impl SmartDeviceTrait for crate::devices::SmartDevice<'_> {
     fn get_name(&self) -> &str {
-        use crate::SmartDevice::Socket;
-        use crate::SmartDevice::Thermometer;
+        use crate::devices::SmartDevice::Socket;
+        use crate::devices::SmartDevice::Thermometer;
         match self {
             Socket(s) => s.name,
             Thermometer(t) => t.name,
@@ -51,7 +51,7 @@ impl SmartDeviceTrait for crate::SmartDevice<'_> {
         match self {
             SmartDevice::Socket(s) => format!(
                 "Socket {} is {} and consumption is {} W",
-                s.name, s.status, s.power_consumption
+                s.name, s.status, s.consumption
             ),
             SmartDevice::Thermometer(t) => format!(
                 "Thermometer {} indicates temperature of {} C",
@@ -72,7 +72,7 @@ impl Socket<'_> {
     }
 
     fn get_power_consumprion(&self) -> i32 {
-        self.power_consumption
+        self.consumption
     }
 }
 
