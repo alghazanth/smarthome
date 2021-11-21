@@ -1,25 +1,27 @@
+use crate::error::{Error, Result};
+
 #[allow(unused)]
-pub struct Socket<'a> {
-    pub name: &'a str,
-    pub description: &'a str,
-    pub status: &'a str,
+pub struct Socket {
+    pub name: String,
+    pub description: String,
+    pub status: String,
     pub consumption: i32,
 }
 
 #[allow(unused)]
-pub struct Thermometer<'a> {
-    pub name: &'a str,
-    pub description: &'a str,
+pub struct Thermometer {
+    pub name: String,
+    pub description: String,
     pub temperature: i32,
 }
 
 #[allow(unused)]
-pub enum SmartDevice<'a> {
-    Socket(Socket<'a>),
-    Thermometer(Thermometer<'a>),
+pub enum SmartDevice {
+    Socket(Socket),
+    Thermometer(Thermometer),
 }
 
-impl PartialEq for SmartDevice<'_> {
+impl PartialEq for SmartDevice {
     fn eq(&self, other: &Self) -> bool {
         use crate::devices::SmartDevice::Socket;
         use crate::devices::SmartDevice::Thermometer;
@@ -32,18 +34,18 @@ impl PartialEq for SmartDevice<'_> {
 }
 
 pub trait SmartDeviceTrait {
-    fn get_name(&self) -> &str;
+    fn get_name(&self) -> String;
 
     fn get_status(&self) -> String;
 }
 
-impl SmartDeviceTrait for crate::devices::SmartDevice<'_> {
-    fn get_name(&self) -> &str {
+impl SmartDeviceTrait for crate::devices::SmartDevice {
+    fn get_name(&self) -> String {
         use crate::devices::SmartDevice::Socket;
         use crate::devices::SmartDevice::Thermometer;
         match self {
-            Socket(s) => s.name,
-            Thermometer(t) => t.name,
+            Socket(s) => s.name.clone(),
+            Thermometer(t) => t.name.clone(),
         }
     }
 
@@ -62,23 +64,29 @@ impl SmartDeviceTrait for crate::devices::SmartDevice<'_> {
 }
 
 #[allow(unused)]
-impl Socket<'_> {
-    fn switch(&mut self) {
-        match self.status {
-            "enabled" => self.status = "disabled",
-            "disabled" => self.status = "enabled",
-            &_ => println!("Socket {} is probably broken", self.name),
-        };
+impl Socket {
+    pub fn switch(&mut self) -> Result<()> {
+        match self.status.as_ref() {
+            "enabled" => {
+                self.status = "disabled".to_string();
+                Ok(())
+            }
+            "disabled" => {
+                self.status = "enabled".to_string();
+                Ok(())
+            }
+            _ => Err(Error::BrokenSocket),
+        }
     }
 
-    fn get_power_consumprion(&self) -> i32 {
+    pub fn get_consumption(&self) -> i32 {
         self.consumption
     }
 }
 
 #[allow(unused)]
-impl Thermometer<'_> {
-    fn get_temperature(&self) -> i32 {
+impl Thermometer {
+    pub fn get_temperature(&self) -> i32 {
         self.temperature
     }
 }

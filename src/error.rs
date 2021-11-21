@@ -3,12 +3,13 @@ use std::result;
 
 pub type Result<T> = result::Result<T, Error>;
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub enum Error {
     NonExistentDevice,
     AlreadyExistentDevice,
     NonExistentRoom,
     AlreadyExistentRoom,
+    BrokenSocket,
 }
 
 impl fmt::Display for Error {
