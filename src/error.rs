@@ -1,10 +1,11 @@
 use std::fmt;
 use std::result;
+use std::error::Error;
 
-pub type Result<T> = result::Result<T, Error>;
+pub type Result<T> = result::Result<T, SmartHomeError>;
 
 #[derive(Debug, PartialEq)]
-pub enum Error {
+pub enum SmartHomeError {
     NonExistentDevice,
     AlreadyExistentDevice,
     NonExistentRoom,
@@ -12,8 +13,10 @@ pub enum Error {
     BrokenSocket,
 }
 
-impl fmt::Display for Error {
+impl fmt::Display for SmartHomeError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}", &self)
     }
 }
+
+impl Error for SmartHomeError {}

@@ -6,7 +6,7 @@ mod rooms;
 #[cfg(test)]
 mod tests {
     use crate::devices::{SmartDevice, SmartDeviceTrait, Socket, Thermometer};
-    use crate::error::Error;
+    use crate::error::SmartHomeError;
     use crate::house::House;
     use crate::rooms::Room;
 
@@ -62,7 +62,7 @@ mod tests {
             .expect("Can't add device");
         assert_eq!(
             room.add_device(SmartDevice::Thermometer(thermometer_2)),
-            Err(Error::AlreadyExistentDevice)
+            Err(SmartHomeError::AlreadyExistentDevice)
         );
     }
 
@@ -125,7 +125,7 @@ mod tests {
         let room_3 = new_room("bedroom".to_string());
         house.add_room(room).expect("Can't add the room");
         house.add_room(room_2).expect("Can't add the room");
-        assert_eq!(house.add_room(room_3), Err(Error::AlreadyExistentRoom));
+        assert_eq!(house.add_room(room_3), Err(SmartHomeError::AlreadyExistentRoom));
     }
 
     #[test]

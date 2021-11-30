@@ -1,5 +1,5 @@
 use crate::devices::SmartDeviceTrait;
-use crate::error::{Error, Result};
+use crate::error::{SmartHomeError, Result};
 use crate::rooms::Room;
 
 #[allow(unused)]
@@ -15,7 +15,7 @@ impl House {
             self.rooms.push(room);
             Ok(())
         } else {
-            Err(Error::AlreadyExistentRoom)
+            Err(SmartHomeError::AlreadyExistentRoom)
         }
     }
 
@@ -24,7 +24,7 @@ impl House {
             self.rooms.remove(index);
             Ok(())
         } else {
-            Err(Error::NonExistentRoom)
+            Err(SmartHomeError::NonExistentRoom)
         }
     }
 

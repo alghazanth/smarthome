@@ -1,5 +1,5 @@
 use crate::devices::{SmartDevice, SmartDeviceTrait};
-use crate::error::{Error, Result};
+use crate::error::{SmartHomeError, Result};
 
 #[allow(unused)]
 pub struct Room {
@@ -18,7 +18,7 @@ impl Room {
             self.devices.push(device);
             Ok(())
         } else {
-            Err(Error::AlreadyExistentDevice)
+            Err(SmartHomeError::AlreadyExistentDevice)
         }
     }
 
@@ -31,7 +31,7 @@ impl Room {
             self.devices.remove(index);
             Ok(())
         } else {
-            Err(Error::NonExistentDevice)
+            Err(SmartHomeError::NonExistentDevice)
         }
     }
 

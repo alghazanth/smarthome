@@ -1,4 +1,4 @@
-use crate::error::{Error, Result};
+use crate::error::{SmartHomeError, Result};
 
 #[allow(unused)]
 pub struct Socket {
@@ -75,7 +75,7 @@ impl Socket {
                 self.status = "enabled".to_string();
                 Ok(())
             }
-            _ => Err(Error::BrokenSocket),
+            _ => Err(SmartHomeError::BrokenSocket),
         }
     }
 
