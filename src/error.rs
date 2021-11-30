@@ -1,6 +1,6 @@
+use std::error::Error;
 use std::fmt;
 use std::result;
-use std::error::Error;
 
 pub type Result<T> = result::Result<T, SmartHomeError>;
 

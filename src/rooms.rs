@@ -1,5 +1,5 @@
 use crate::devices::{SmartDevice, SmartDeviceTrait};
-use crate::error::{SmartHomeError, Result};
+use crate::error::{Result, SmartHomeError};
 
 #[allow(unused)]
 pub struct Room {
@@ -41,10 +41,15 @@ impl Room {
             .find(|&device| device.get_name() == name)
     }
 
-    pub fn list_devices(&self) -> String {
-        self.devices
+    pub fn list_devices(&self) -> Option<String> {
+        let list: String = self
+            .devices
             .iter()
-            .fold(String::new(), |acc, arg| acc + &arg.get_name() + "\n")
+            .fold(String::new(), |acc, arg| acc + &arg.get_name() + "\n");
+        match list.len() {
+            x if x > 0 => Some(list),
+            _ => None,
+        }
     }
 }
 

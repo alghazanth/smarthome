@@ -1,5 +1,5 @@
 use crate::devices::SmartDeviceTrait;
-use crate::error::{SmartHomeError, Result};
+use crate::error::{Result, SmartHomeError};
 use crate::rooms::Room;
 
 #[allow(unused)]
@@ -28,20 +28,30 @@ impl House {
         }
     }
 
-    pub fn list_rooms(&self) -> String {
-        self.rooms
+    pub fn list_rooms(&self) -> Option<String> {
+        let list: String = self
+            .rooms
             .iter()
-            .fold(String::new(), |acc, arg| acc + &arg.name + "\n")
+            .fold(String::new(), |acc, arg| acc + &arg.name + "\n");
+        match list.len() {
+            x if x > 0 => Some(list),
+            _ => None,
+        }
     }
 
-    pub fn get_report(&self) -> String {
-        self.rooms
+    pub fn get_report(&self) -> Option<String> {
+        let report: String = self
+            .rooms
             .iter()
             .map(|x| {
                 x.devices
                     .iter()
                     .fold(String::new(), |acc, arg| acc + &arg.get_status() + "\n")
             })
-            .collect()
+            .collect();
+        match report.len() {
+            x if x > 0 => Some(report),
+            _ => None,
+        }
     }
 }

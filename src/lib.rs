@@ -50,7 +50,7 @@ mod tests {
             .expect("Can't add device");
         room.add_device(SmartDevice::Thermometer(thermometer))
             .expect("Can't add device");
-        assert_eq!(room.list_devices(), "socket\nthermometer\n");
+        assert_eq!(room.list_devices().unwrap(), "socket\nthermometer\n");
     }
 
     #[test]
@@ -82,7 +82,7 @@ mod tests {
         room.add_device(SmartDevice::Thermometer(thermometer_2))
             .expect("Can't add device");
         assert_eq!(
-            room.list_devices(),
+            room.list_devices().unwrap(),
             "socket_1\nsocket_2\nthermometer_1\nthermometer_2\n"
         );
     }
@@ -104,7 +104,10 @@ mod tests {
             .expect("Can't add device");
         room.remove_device(String::from("thermometer_1"))
             .expect("Can't remove device");
-        assert_eq!(room.list_devices(), "socket_1\nsocket_2\nthermometer_2\n");
+        assert_eq!(
+            room.list_devices().unwrap(),
+            "socket_1\nsocket_2\nthermometer_2\n"
+        );
     }
 
     #[test]
@@ -114,7 +117,7 @@ mod tests {
         let room_2 = new_room("kitchen".to_string());
         house.add_room(room).expect("Can't add the room");
         house.add_room(room_2).expect("Can't add the room");
-        assert_eq!(house.list_rooms(), "bedroom\nkitchen\n");
+        assert_eq!(house.list_rooms().unwrap(), "bedroom\nkitchen\n");
     }
 
     #[test]
@@ -125,7 +128,10 @@ mod tests {
         let room_3 = new_room("bedroom".to_string());
         house.add_room(room).expect("Can't add the room");
         house.add_room(room_2).expect("Can't add the room");
-        assert_eq!(house.add_room(room_3), Err(SmartHomeError::AlreadyExistentRoom));
+        assert_eq!(
+            house.add_room(room_3),
+            Err(SmartHomeError::AlreadyExistentRoom)
+        );
     }
 
     #[test]
@@ -140,7 +146,7 @@ mod tests {
         house
             .remove_room(String::from("kitchen"))
             .expect("Can't remove room");
-        assert_eq!(house.list_rooms(), "bedroom\nhallway\n");
+        assert_eq!(house.list_rooms().unwrap(), "bedroom\nhallway\n");
     }
 
     #[test]
@@ -152,7 +158,7 @@ mod tests {
         house.add_room(room).expect("Can't add the room");
         house.add_room(room_2).expect("Can't add the room");
         house.add_room(room_3).expect("Can't add the room");
-        assert_eq!(house.list_rooms(), "bedroom\nkitchen\nhallway\n");
+        assert_eq!(house.list_rooms().unwrap(), "bedroom\nkitchen\nhallway\n");
     }
 
     #[test]
@@ -178,7 +184,7 @@ mod tests {
         house.add_room(room).expect("Can't add the room");
         house.add_room(room_2).expect("Can't add the room");
         house.add_room(room_3).expect("Can't add the room");
-        assert_eq!(house.get_report(), "Socket socket_1 is disabled and consumption is 0 W\nThermometer thermometer_2 indicates temperature of 0 C\nSocket socket_2 is disabled and consumption is 0 W\nThermometer thermometer_1 indicates temperature of 0 C\n");
+        assert_eq!(house.get_report().unwrap(), "Socket socket_1 is disabled and consumption is 0 W\nThermometer thermometer_2 indicates temperature of 0 C\nSocket socket_2 is disabled and consumption is 0 W\nThermometer thermometer_1 indicates temperature of 0 C\n");
     }
 
     #[test]

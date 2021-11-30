@@ -1,4 +1,4 @@
-use crate::error::{SmartHomeError, Result};
+use crate::error::{Result, SmartHomeError};
 
 #[allow(unused)]
 pub struct Socket {
